@@ -1,0 +1,17 @@
+{% if results %}
+    {{ results.entries | length }} docs results
+
+    {% for entry in results.entries %}
+    - {{ entry.htmlFormattedUrl | safe }}: {{ entry.htmlTitle | safe }}
+    {% endfor %}
+
+    {% if results.queries and results.queries.previousPage %}
+    Previous docs page offset: {{ results.queries.previousPage.0.startIndex }}
+    {% endif %}
+
+    {% if results.queries and results.queries.nextPage %}
+    Next docs page offset: {{ results.queries.nextPage.0.startIndex }}
+    {% endif %}
+{% else %}
+    No docs results
+{% endif %}
