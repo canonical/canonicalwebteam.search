@@ -1,14 +1,16 @@
 # Standard library
+import io
 import os
 import unittest
 import warnings
+from contextlib import redirect_stderr
 
 # Packages
 import flask
 import httpretty
 
 # Local
-from canonicalwebteam.search import build_search_view
+from canonicalwebteam.search import build_search_view, NoAPIKeyError
 from tests.fixtures.search_mock import register_uris
 
 
@@ -37,16 +39,16 @@ class TestApp(unittest.TestCase):
 
         template_folder = f"{this_dir}/fixtures/templates"
 
-        app = flask.Flask("main", template_folder=template_folder)
+        self.app = flask.Flask("main", template_folder=template_folder)
 
         # Provide fake API key
         os.environ["SEARCH_API_KEY"] = "test-api-key"
 
         # Default use-case
-        app.add_url_rule("/search", "search", build_search_view())
+        self.app.add_url_rule("/search", "search", build_search_view())
 
         # Custom use-case
-        app.add_url_rule(
+        self.app.add_url_rule(
             "/docs/search",
             "docs-search",
             build_search_view(
@@ -54,11 +56,32 @@ class TestApp(unittest.TestCase):
             ),
         )
 
-        self.client = app.test_client()
+        self.client = self.app.test_client()
 
     def tearDown(self):
         httpretty.disable()
         httpretty.reset()
+
+    def test_no_key(self):
+        """
+        Check we see the right error when there's no API key
+        """
+
+        # Delete API key
+        del os.environ["SEARCH_API_KEY"]
+
+        # Check we get 500 error without debug mode on
+        output = io.StringIO()
+        with redirect_stderr(output):
+            error_response = self.client.get("/search?q=snap")
+
+        self.assertIn("NoAPIKeyError", output.getvalue())
+        self.assertEqual(error_response.status_code, 500)
+
+        # Now turn debug mode on, check we get the direct error
+        self.app.debug = True
+        with self.assertRaises(NoAPIKeyError):
+            self.app.test_client().get("/search?q=snap")
 
     def test_no_search(self):
         """
