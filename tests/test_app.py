@@ -27,6 +27,9 @@ class TestApp(unittest.TestCase):
         warnings.filterwarnings(
             "ignore", category=ResourceWarning, message="unclosed.*"
         )
+        # Tests aren't where we should worry about deprication,
+        # as long as everything works
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
 
         # Enable HTTPretty and set up mock URLs
         httpretty.enable()
@@ -93,10 +96,68 @@ class TestApp(unittest.TestCase):
         self.assertIn(b"Next page offset: 11", search_response.data)
         self.assertNotIn(b"Previous", search_response.data)
 
+    def test_offset_results(self):
+        """
+        Check we can get offset results, starting at 20
+        """
+
+        search_response = self.client.get("/search?q=snap&start=20")
+
+        # Check for success
+        self.assertEqual(search_response.status_code, 200)
+        # Check number of results
+        self.assertIn(b"10 results", search_response.data)
+        # Check items
+        self.assertIn(
+            (
+                b"- https://docs.<b>snap</b>craft.io/ros-applications: "
+                b"ROS applications - <b>Snap</b> documentation"
+            ),
+            search_response.data,
+        )
+        self.assertNotIn(
+            b"- https://docs.<b>snap</b>craft.io/: <b>Snap</b> documentation",
+            search_response.data,
+        )
+        # Check next page
+        self.assertIn(b"Next page offset: 30", search_response.data)
+        self.assertIn(b"Previous page offset: 10", search_response.data)
+
+    def test_limited_results(self):
+        """
+        Check we can get a limited list of results (3)
+        """
+
+        search_response = self.client.get("/search?q=snap&start=20&num=3")
+
+        # Check for success
+        self.assertEqual(search_response.status_code, 200)
+        # Check number of results
+        self.assertIn(b"3 results", search_response.data)
+        # Check an item
+        self.assertIn(
+            (
+                b"- https://docs.<b>snap</b>craft.io/<b>snaps</b>hots: "
+                b"Snapshots - <b>Snap</b> documentation"
+            ),
+            search_response.data,
+        )
+        self.assertNotIn(
+            (
+                b"- https://docs.<b>snap</b>craft.io/ros-applications: "
+                b"ROS applications - <b>Snap</b> documentation"
+            ),
+            search_response.data,
+        )
+        # Check next page
+        self.assertIn(b"Next page offset: 23", search_response.data)
+        self.assertIn(b"Previous page offset: 17", search_response.data)
+
     def test_first_page_of_docs_results(self):
         """
         Check that the first page of docs results has docs search content
         """
+
         docs_response = self.client.get("/docs/search?q=snap")
         # Check for success
         self.assertEqual(docs_response.status_code, 200)
