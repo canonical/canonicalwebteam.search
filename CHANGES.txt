@@ -1,0 +1,1 @@
+v0.1.0, 2019-07-19 -- Create the extension from code in docs.snapcraft.io
