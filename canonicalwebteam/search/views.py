@@ -47,23 +47,30 @@ def build_search_view(site=None, template_path="search.html"):
         if not search_api_key:
             raise NoAPIKeyError("Unable to search: No API key provided")
 
-        query = flask.request.args.get("q")
-        start = flask.request.args.get("start")
-        num = flask.request.args.get("num")
+        params = flask.request.args
+        query = params.get("q")
+        start = params.get("start")
+        num = params.get("num")
+        site_search = site or params.get("siteSearch") or params.get("domain")
         results = None
 
         if query:
             results = get_search_results(
                 api_key=search_api_key,
                 search_engine_id=search_engine_id,
-                siteSearch=site,
+                siteSearch=site_search,
                 query=query,
                 start=start,
                 num=num,
             )
 
         return flask.render_template(
-            template_path, query=query, start=start, num=num, results=results
+            template_path,
+            query=query,
+            start=start,
+            num=num,
+            results=results,
+            siteSearch=site_search,
         )
 
     return search_view
