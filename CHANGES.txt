@@ -1,1 +1,2 @@
 v0.1.0, 2019-07-19 -- Create the extension from code in docs.snapcraft.io
+v0.2.0, 2019-08-28 -- Support for siteSearch param
