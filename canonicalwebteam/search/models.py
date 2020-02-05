@@ -37,6 +37,7 @@ def get_search_results(
 
         # Remove newlines from the snippet
         for item in results["entries"]:
-            item["htmlSnippet"] = item["htmlSnippet"].replace("<br>\n", "")
+            if "htmlSnippet" in item:
+                item["htmlSnippet"] = item["htmlSnippet"].replace("<br>\n", "")
 
     return results
