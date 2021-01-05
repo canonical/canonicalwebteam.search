@@ -12,11 +12,20 @@ class NoAPIKeyError(Exception):
     pass
 
 
-def build_search_view(site=None, template_path="search.html"):
+def build_search_view(
+    search_engine_id="009048213575199080868:i3zoqdwqk8o",
+    template_path="search.html",
+    site=None,
+):
     """
     Build and return a view function that will query the
     Google Custom Search API and then render search results
     using the provided template.
+
+    According to Google Custom API, `siteSearch` is optional.
+    https://developers.google.com/custom-search/v1/using_rest#making_a_request
+    Therefore, the scope of the search is determined by
+    the cx (Search engine ID), this ID is public
 
     Usage in e.g. `app.py`:
 
@@ -27,7 +36,7 @@ def build_search_view(site=None, template_path="search.html"):
             "/search",
             "search",
             build_search_view(
-                site="snapcraft.io",
+                search_engine_id="009048213575199080868:i3zoqdwqk8o",
                 template_path="search.html"
             )
         )
@@ -37,9 +46,6 @@ def build_search_view(site=None, template_path="search.html"):
         """
         Get search results from Google Custom Search
         """
-
-        # The webteam's default custom search ID
-        search_engine_id = "009048213575199080868:i3zoqdwqk8o"
 
         # API key should always be provided as an environment variable
         search_api_key = os.getenv("SEARCH_API_KEY")
