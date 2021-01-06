@@ -55,3 +55,7 @@ SEARCH_API_KEY=xxxxx FLASK_APP=app.py flask run
 ```
 
 Once this is done, you should be able to visit `/search?q={some_query}` in your site and see search results built with your `search.html` template.
+
+## New sites
+
+If you created a new site and the API is not returning any results, you may need to add it the CSE [list of sites](https://cse.google.com/cse/all) to be included by our custom search. If you don't see any sites, ask the Webteam.
