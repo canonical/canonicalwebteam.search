@@ -58,4 +58,4 @@ Once this is done, you should be able to visit `/search?q={some_query}` in your 
 
 ## New sites
 
-If you created a new site and the API is not returning any results, you may need to add it the CSE [list of sites](https://cse.google.com/cse/all) to be included by our custom search. If you don't see any sites, ask the Webteam.
+If you created a new site and the API is not returning any results, you may need to add it to the Google Custom Search Engine [list of sites](https://cse.google.com/cse/all). If you don't see any sites in this page, ask the Webteam.
