@@ -8,6 +8,7 @@ from contextlib import redirect_stderr
 # Packages
 import flask
 import httpretty
+import requests
 
 # Local
 from canonicalwebteam.search import build_search_view, NoAPIKeyError
@@ -38,6 +39,7 @@ class TestApp(unittest.TestCase):
         register_uris()
 
         template_folder = f"{this_dir}/fixtures/templates"
+        session = requests.Session()
 
         self.app = flask.Flask("main", template_folder=template_folder)
 
@@ -45,14 +47,18 @@ class TestApp(unittest.TestCase):
         os.environ["SEARCH_API_KEY"] = "test-api-key"
 
         # Default use-case
-        self.app.add_url_rule("/search", "search", build_search_view())
+        self.app.add_url_rule(
+            "/search", "search", build_search_view(session=session)
+        )
 
         # Custom use-case
         self.app.add_url_rule(
             "/docs/search",
             "docs-search",
             build_search_view(
-                site="maas.io/docs", template_path="docs/search.html"
+                session=session,
+                site="maas.io/docs",
+                template_path="docs/search.html",
             ),
         )
 

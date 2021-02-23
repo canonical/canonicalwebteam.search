@@ -1,6 +1,4 @@
-
-
-def get_search_results(
+def get_search_results(  # noqa: E302
     session,
     api_key,
     query,
