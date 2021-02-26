@@ -12,7 +12,7 @@ class NoAPIKeyError(Exception):
     pass
 
 
-def build_search_view(site=None, template_path="search.html"):
+def build_search_view(session, site=None, template_path="search.html"):
     """
     Build and return a view function that will query the
     Google Custom Search API and then render search results
@@ -23,10 +23,12 @@ def build_search_view(site=None, template_path="search.html"):
         from canonicalwebteam.search import build_search_view
 
         app = Flask()
+        session = talisker.requests.get_session()
         app.add_url_rule(
             "/search",
             "search",
             build_search_view(
+                session=session,
                 site="snapcraft.io",
                 template_path="search.html"
             )
@@ -56,6 +58,7 @@ def build_search_view(site=None, template_path="search.html"):
 
         if query:
             results = get_search_results(
+                session=session,
                 api_key=search_api_key,
                 search_engine_id=search_engine_id,
                 siteSearch=site_search,

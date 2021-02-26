@@ -22,8 +22,9 @@ You can add the extension on your project's application as follows:
 from canonicalwebteam.search import build_search_view
 
 app = Flask("myapp")
+session = talisker.requests.get_session()  # You must provide a requests session
 
-app.add_url_rule("/search", "search", build_search_view())
+app.add_url_rule("/search", "search", build_search_view(session))
 
 # Or, a bit more complex example
 
@@ -31,6 +32,7 @@ app.add_url_rule(
     "/docs/search",
     "docs-search",
     build_search_view(
+        session=session,
         site="maas.io/docs",
         template_path="docs/search.html"
     )

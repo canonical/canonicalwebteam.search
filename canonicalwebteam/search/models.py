@@ -1,15 +1,11 @@
-# Packages
-from canonicalwebteam.http import CachedSession
-
-
-def get_search_results(
+def get_search_results(  # noqa: E302
+    session,
     api_key,
     query,
     search_engine_id,
     start=None,
     num=None,
     siteSearch=None,
-    session=CachedSession(fallback_cache_duration=600),
 ):
     """
     Query the Google Custom Search API for search results
