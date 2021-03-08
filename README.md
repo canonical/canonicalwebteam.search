@@ -19,6 +19,8 @@ Or add `canonicalwebteam.search` to your `requirements.txt`.
 You can add the extension on your project's application as follows:
 
 ``` python3
+import talisker.requests
+from flask import Flask
 from canonicalwebteam.search import build_search_view
 
 app = Flask("myapp")
