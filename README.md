@@ -1,7 +1,7 @@
 # canonicalwebteam.search
 
 [![circleci build status](https://circleci.com/gh/canonical-web-and-design/canonicalwebteam.search.svg?style=shield)](https://circleci.com/gh/canonical-web-and-design/canonicalwebteam.search)
-[![Code coverage](https://codecov.io/gh/canonical-web-and-design/canonicalwebteam.search/branch/master/graph/badge.svg)](https://codecov.io/gh/canonical-web-and-design/canonicalwebteam.search)
+[![Code coverage](https://codecov.io/gh/canonical-web-and-design/canonicalwebteam.search/branch/main/graph/badge.svg)](https://codecov.io/gh/canonical-web-and-design/canonicalwebteam.search)
 [![PyPI version](https://badge.fury.io/py/canonicalwebteam.search.svg)](https://pypi.org/project/canonicalwebteam.search/)
 
 Flask extension to provide a search view for querying the webteam's Google Custom Search account.
