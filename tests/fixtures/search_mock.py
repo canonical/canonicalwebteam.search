@@ -14,7 +14,7 @@ def register_uris():
     # First page of results for "snap"
     httpretty.register_uri(
         httpretty.GET,
-        "https://www.googleapis.com/customsearch/v1?key=test-api-key&cx=009048213575199080868:i3zoqdwqk8o&q=snap",
+        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap",
         match_querystring=True,
         body=json.dumps(
             {
@@ -138,7 +138,7 @@ def register_uris():
     # Results for "snap" with siteSearch=maas.io/docs
     httpretty.register_uri(
         httpretty.GET,
-        "https://www.googleapis.com/customsearch/v1?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap&siteSearch=maas.io%2Fdocs",
+        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap&siteSearch=maas.io%2Fdocs",
         match_querystring=True,
         body=json.dumps(
             {
@@ -263,7 +263,7 @@ def register_uris():
     # Results for "snap" with start=20
     httpretty.register_uri(
         httpretty.GET,
-        "https://www.googleapis.com/customsearch/v1?key=test-api-key&cx=009048213575199080868:i3zoqdwqk8o&q=snap&start=20",
+        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap&start=20",
         match_querystring=True,
         body=json.dumps(
             {
@@ -391,7 +391,7 @@ def register_uris():
     # Results for "snap" with start=20 and num=3
     httpretty.register_uri(
         httpretty.GET,
-        "https://www.googleapis.com/customsearch/v1?key=test-api-key&cx=009048213575199080868:i3zoqdwqk8o&q=snap&start=20&num=3",
+        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap&start=20&num=3",
         match_querystring=True,
         body=json.dumps(
             {
