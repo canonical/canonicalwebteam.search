@@ -9,10 +9,12 @@ def get_search_results(  # noqa: E302
 ):
     """
     Query the Google Custom Search API for search results
+
+    https://developers.google.com/custom-search/v1/site_restricted_api
     """
 
     response = session.get(
-        "https://www.googleapis.com/customsearch/v1",
+        "https://www.googleapis.com/customsearch/v1/siterestrict",
         params={
             "key": api_key,
             "cx": search_engine_id,

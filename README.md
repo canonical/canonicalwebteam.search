@@ -37,6 +37,7 @@ app.add_url_rule(
         session=session,
         site="maas.io/docs",
         template_path="docs/search.html"
+        search_engine_id="xxxxxxxxxx" # Optional argument, required by some of our sites
     )
 )
 ```
@@ -59,6 +60,8 @@ SEARCH_API_KEY=xxxxx FLASK_APP=app.py flask run
 ```
 
 Once this is done, you should be able to visit `/search?q={some_query}` in your site and see search results built with your `search.html` template.
+
+For some sites, you will need to pass a specific search engine ID (cx) to the `build_search_view` which you will find in the [Custom Search Engine page](https://cse.google.co.uk/cse/all).
 
 ## New sites
 

@@ -111,7 +111,6 @@ class TestApp(unittest.TestCase):
         """
 
         search_response = self.client.get("/search?q=snap")
-
         # Check for success
         self.assertEqual(search_response.status_code, 200)
         # Check number of results

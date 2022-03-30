@@ -12,7 +12,12 @@ class NoAPIKeyError(Exception):
     pass
 
 
-def build_search_view(session, site=None, template_path="search.html"):
+def build_search_view(
+    session,
+    site=None,
+    template_path="search.html",
+    search_engine_id="009048213575199080868:i3zoqdwqk8o",
+):
     """
     Build and return a view function that will query the
     Google Custom Search API and then render search results
@@ -39,9 +44,6 @@ def build_search_view(session, site=None, template_path="search.html"):
         """
         Get search results from Google Custom Search
         """
-
-        # The webteam's default custom search ID
-        search_engine_id = "009048213575199080868:i3zoqdwqk8o"
 
         # API key should always be provided as an environment variable
         search_api_key = os.getenv("SEARCH_API_KEY")
