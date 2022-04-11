@@ -62,6 +62,17 @@ class TestApp(unittest.TestCase):
             ),
         )
 
+        # Site restricted search
+        self.app.add_url_rule(
+            "/server/docs/search",
+            "server-docs-search",
+            build_search_view(
+                session=session,
+                template_path="docs/search.html",
+                site_restricted_search=True,
+            ),
+        )
+
         self.client = self.app.test_client()
 
     def tearDown(self):
@@ -206,3 +217,30 @@ class TestApp(unittest.TestCase):
         # Check next page
         self.assertIn(b"Next docs page offset: 11", docs_response.data)
         self.assertNotIn(b"Previous", docs_response.data)
+
+    def test_site_restricted_search(self):
+        """
+        Check we can get results with site restricted search
+        """
+
+        search_response = self.client.get(
+            "/server/docs/search?q=packer&start=20&num=3"
+        )
+
+        # Check for success
+        self.assertEqual(search_response.status_code, 200)
+        # Check an item
+        self.assertIn(
+            (
+                b"- https://docs.<b>snap</b>craft.io/<b>snaps</b>hots: "
+                b"Snapshots - <b>Snap</b> documentation"
+            ),
+            search_response.data,
+        )
+        self.assertNotIn(
+            (
+                b"- https://docs.<b>snap</b>craft.io/ros-applications: "
+                b"ROS applications - <b>Snap</b> documentation"
+            ),
+            search_response.data,
+        )

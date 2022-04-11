@@ -14,7 +14,7 @@ def register_uris():
     # First page of results for "snap"
     httpretty.register_uri(
         httpretty.GET,
-        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap",
+        "https://www.googleapis.com/customsearch/v1?key=test-api-key&cx=009048213575199080868:i3zoqdwqk8o&q=snap",
         match_querystring=True,
         body=json.dumps(
             {
@@ -138,7 +138,7 @@ def register_uris():
     # Results for "snap" with siteSearch=maas.io/docs
     httpretty.register_uri(
         httpretty.GET,
-        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap&siteSearch=maas.io%2Fdocs",
+        "https://www.googleapis.com/customsearch/v1?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap&siteSearch=maas.io%2Fdocs",
         match_querystring=True,
         body=json.dumps(
             {
@@ -263,7 +263,7 @@ def register_uris():
     # Results for "snap" with start=20
     httpretty.register_uri(
         httpretty.GET,
-        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap&start=20",
+        "https://www.googleapis.com/customsearch/v1?key=test-api-key&cx=009048213575199080868:i3zoqdwqk8o&q=snap&start=20",
         match_querystring=True,
         body=json.dumps(
             {
@@ -391,7 +391,59 @@ def register_uris():
     # Results for "snap" with start=20 and num=3
     httpretty.register_uri(
         httpretty.GET,
-        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868%3Ai3zoqdwqk8o&q=snap&start=20&num=3",
+        "https://www.googleapis.com/customsearch/v1?key=test-api-key&cx=009048213575199080868:i3zoqdwqk8o&q=snap&start=20&num=3",
+        match_querystring=True,
+        body=json.dumps(
+            {
+                "hello": "world",
+                "queries": {
+                    "previousPage": [{"count": 3, "startIndex": 17}],
+                    "nextPage": [{"count": 3, "startIndex": 23}],
+                },
+                "items": [
+                    {
+                        "title": "Installing snap on CentOS - Snap documentation",
+                        "htmlTitle": "Installing \u003cb\u003esnap\u003c/b\u003e on CentOS - \u003cb\u003eSnap\u003c/b\u003e documentation",
+                        "link": "https://docs.snapcraft.io/installing-snap-on-centos",
+                        "displayLink": "docs.snapcraft.io",
+                        "snippet": "Snap is available for CentOS 7.6+, and Red Hat Enterprise Linux 7.6+, from the ... \nOnce installed, the systemd unit that manages the main snap communication ...",
+                        "htmlSnippet": "\u003cb\u003eSnap\u003c/b\u003e is available for CentOS 7.6+, and Red Hat Enterprise Linux 7.6+, from the ... \u003cbr\u003e\nOnce installed, the systemd unit that manages the main \u003cb\u003esnap\u003c/b\u003e communication&nbsp;...",
+                        "cacheId": "92ch6i8PQuwJ",
+                        "formattedUrl": "https://docs.snapcraft.io/installing-snap-on-centos",
+                        "htmlFormattedUrl": "https://docs.\u003cb\u003esnap\u003c/b\u003ecraft.io/installing-\u003cb\u003esnap\u003c/b\u003e-on-centos",
+                    },
+                    {
+                        "title": "Snapshots - Snap documentation",
+                        "htmlTitle": "Snapshots - \u003cb\u003eSnap\u003c/b\u003e documentation",
+                        "link": "https://docs.snapcraft.io/snapshots",
+                        "displayLink": "docs.snapcraft.io",
+                        "snippet": "A snapshot is a copy of the user, system and configuration data stored by snapd \nfor one or more snaps on your system. Snapshots are generated manually with ...",
+                        "htmlSnippet": "A snapshot is a copy of the user, system and configuration data stored by snapd \u003cbr\u003e\nfor one or more \u003cb\u003esnaps\u003c/b\u003e on your system. Snapshots are generated manually with&nbsp;...",
+                        "cacheId": "dEmR_zVdN4cJ",
+                        "formattedUrl": "https://docs.snapcraft.io/snapshots",
+                        "htmlFormattedUrl": "https://docs.\u003cb\u003esnap\u003c/b\u003ecraft.io/\u003cb\u003esnaps\u003c/b\u003ehots",
+                    },
+                    {
+                        "title": "The snap format - Snap documentation",
+                        "htmlTitle": "The \u003cb\u003esnap\u003c/b\u003e format - \u003cb\u003eSnap\u003c/b\u003e documentation",
+                        "link": "https://docs.snapcraft.io/snap-format",
+                        "displayLink": "docs.snapcraft.io",
+                        "snippet": "A snap is a Squashfs file carrying content alongside metadata to tell the system it \nshould be manipulated. When installed, the Squashfs file for the snap is ...",
+                        "htmlSnippet": "A \u003cb\u003esnap\u003c/b\u003e is a Squashfs file carrying content alongside metadata to tell the system it \u003cbr\u003e\nshould be manipulated. When installed, the Squashfs file for the \u003cb\u003esnap\u003c/b\u003e is&nbsp;...",
+                        "cacheId": "hRzSriKzEf4J",
+                        "formattedUrl": "https://docs.snapcraft.io/snap-format",
+                        "htmlFormattedUrl": "https://docs.\u003cb\u003esnap\u003c/b\u003ecraft.io/\u003cb\u003esnap\u003c/b\u003e-format",
+                    },
+                ],
+            }
+        ),
+        content_type="application/json",
+    )
+
+    # Results for "packer" with siterestrict search and pagination start=20 and num=3
+    httpretty.register_uri(
+        httpretty.GET,
+        "https://www.googleapis.com/customsearch/v1/siterestrict?key=test-api-key&cx=009048213575199080868:i3zoqdwqk8o&q=packer&start=20&num=3",
         match_querystring=True,
         body=json.dumps(
             {
