@@ -17,6 +17,7 @@ def build_search_view(
     site=None,
     template_path="search.html",
     search_engine_id="009048213575199080868:i3zoqdwqk8o",
+    site_restricted_search=False,
 ):
     """
     Build and return a view function that will query the
@@ -64,6 +65,7 @@ def build_search_view(
                 api_key=search_api_key,
                 search_engine_id=search_engine_id,
                 siteSearch=site_search,
+                site_restricted_search=site_restricted_search,
                 query=query,
                 start=start,
                 num=num,

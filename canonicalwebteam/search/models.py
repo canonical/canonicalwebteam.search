@@ -3,6 +3,7 @@ def get_search_results(  # noqa: E302
     api_key,
     query,
     search_engine_id,
+    site_restricted_search,
     start=None,
     num=None,
     siteSearch=None,
@@ -12,9 +13,15 @@ def get_search_results(  # noqa: E302
 
     https://developers.google.com/custom-search/v1/site_restricted_api
     """
+    url_endpoint = "https://www.googleapis.com/customsearch/v1"
+
+    if site_restricted_search:
+        url_endpoint = (
+            "https://www.googleapis.com/customsearch/v1/siterestrict"
+        )
 
     response = session.get(
-        "https://www.googleapis.com/customsearch/v1/siterestrict",
+        url_endpoint,
         params={
             "key": api_key,
             "cx": search_engine_id,
