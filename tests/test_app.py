@@ -87,13 +87,15 @@ class TestApp(unittest.TestCase):
         # Delete API key
         del os.environ["SEARCH_API_KEY"]
 
-        # Check we get 500 error without debug mode on
-        output = io.StringIO()
-        with redirect_stderr(output):
-            error_response = self.client.get("/search?q=snap")
+        # it's not possible to redirect stderr in Github action
+        if not os.getenv("GITHUB_ACTIONS"):
+            # Check we get 500 error without debug mode on
+            output = io.StringIO()
+            with redirect_stderr(output):
+                error_response = self.client.get("/search?q=snap")
 
-        self.assertIn("NoAPIKeyError", output.getvalue())
-        self.assertEqual(error_response.status_code, 500)
+            self.assertIn("NoAPIKeyError", output.getvalue())
+            self.assertEqual(error_response.status_code, 500)
 
         # Now turn debug mode on, check we get the direct error
         self.app.debug = True

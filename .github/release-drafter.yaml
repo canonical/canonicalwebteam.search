@@ -1,8 +1,0 @@
-change-template: "$TITLE (#$NUMBER)"
-exclude-labels:
-  - 'skip-changelog'
-template: |
-  ## Changes
-  $CHANGES
-  ## This release was made possible by the following contributors:
-  $CONTRIBUTORS
