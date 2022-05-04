@@ -42,6 +42,8 @@ app.add_url_rule(
 )
 ```
 
+[![Publish](https://github.com/canonical-web-and-design/canonicalwebteam.search/actions/workflows/publish.yaml/badge.svg?branch=main)](https://github.com/canonical-web-and-design/canonicalwebteam.search/actions/workflows/publish.yaml)
+
 ### The template
 
 You need to create an HTML template at the specificed `template_path`. By default this will be `search.html` inside your templates folder. This template will be passed the following data:
