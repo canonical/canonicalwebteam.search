@@ -15,6 +15,6 @@ setup(
     packages=find_packages(),
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    install_requires=["Flask>=1.0.2"],
+    install_requires=["Flask>=1.0.2", "user-agents>=2.0.0"],
     tests_require=["httpretty"],
 )
