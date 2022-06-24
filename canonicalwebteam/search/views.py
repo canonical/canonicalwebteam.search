@@ -3,6 +3,7 @@ import os
 
 # Packages
 import flask
+import user_agents
 
 # Local
 from canonicalwebteam.search.models import get_search_results
@@ -60,6 +61,13 @@ def build_search_view(
         results = None
 
         if query:
+            agent = user_agents.parse(str(flask.request.user_agent))
+
+            # Block search bots
+            # So we don't pay for their API calls
+            if agent.is_bot:
+                flask.abort(403)
+
             results = get_search_results(
                 session=session,
                 api_key=search_api_key,
