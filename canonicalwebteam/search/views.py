@@ -1,6 +1,5 @@
 # Standard library
 import os
-import re
 
 # Packages
 import flask
@@ -86,14 +85,17 @@ def build_search_view(
                 num=num,
             )
 
-            return flask.render_template(
-                template_path,
-                query=query,
-                start=start,
-                num=num,
-                results=results,
-                siteSearch=site_search,
-            ), {"X-Robots-Tag": "noindex"}
+            return (
+                flask.render_template(
+                    template_path,
+                    query=query,
+                    start=start,
+                    num=num,
+                    results=results,
+                    siteSearch=site_search,
+                ),
+                {"X-Robots-Tag": "noindex"},
+            )
 
         else:
             return flask.render_template(
