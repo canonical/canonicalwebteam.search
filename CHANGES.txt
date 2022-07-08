@@ -5,4 +5,4 @@ v1.0.0, 2021-02-23 -- Insist on being passed a request session instead of using 
 v1.2.0, 2021-04-11 -- Add optional site restricted search
 v1.2.1, 2022-06-23 -- Block results pages from being indexed; block bots from using search API
 v1.2.2, 2022-07-06 -- Block searches with weird characters in them
-v1.2.3, 2022-07-08 -- Check IP blacklists for spammy-looking requests
+v1.2.3, 2022-07-08 -- Check IP blocklists for spammy-looking requests

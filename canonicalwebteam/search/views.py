@@ -68,13 +68,13 @@ def build_search_view(
             if any(char in query for char in illegal_characters):
                 flask.abort(403, "Search query contains an illegal character")
 
-            # Block spammers from blacklists
+            # Block spammers from blocklists
             if ".com" in query:
                 ipcheck = DNSBLIpChecker().check(flask.request.remote_addr)
                 if ipcheck.blacklisted:
-                    blacklists = ", ".join(ipcheck.detected_by.keys())
+                    blocklists = ", ".join(ipcheck.detected_by.keys())
                     flask.abort(
-                        403, f"IP address detected in blacklists: {blacklists}"
+                        403, f"IP address detected in blocklists: {blocklists}"
                     )
 
             # Block if a search bot
