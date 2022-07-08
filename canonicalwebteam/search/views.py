@@ -61,12 +61,18 @@ def build_search_view(
         results = None
 
         if query:
-            agent = user_agents.parse(str(flask.request.user_agent))
+            # Block weird characters
+            illegal_characters = ("【", "】")
 
-            # Block search bots
-            # So we don't pay for their API calls
+            if any(char in query for char in illegal_characters):
+                flask.abort(403, "Search query contains an illegal character")
+
+            # Block if a search bot
+            agent = user_agents.parse(str(flask.request.user_agent))
             if agent.is_bot:
-                flask.abort(403)
+                flask.abort(
+                    403, "Search engine crawlers can't perform searches"
+                )
 
             results = get_search_results(
                 session=session,
@@ -79,14 +85,17 @@ def build_search_view(
                 num=num,
             )
 
-            return flask.render_template(
-                template_path,
-                query=query,
-                start=start,
-                num=num,
-                results=results,
-                siteSearch=site_search,
-            ), {"X-Robots-Tag": "noindex"}
+            return (
+                flask.render_template(
+                    template_path,
+                    query=query,
+                    start=start,
+                    num=num,
+                    results=results,
+                    siteSearch=site_search,
+                ),
+                {"X-Robots-Tag": "noindex"},
+            )
 
         else:
             return flask.render_template(

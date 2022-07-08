@@ -3,4 +3,5 @@ v0.2.0, 2019-08-28 -- Support for siteSearch param
 v0.2.1, 2020-02-05 -- Fix error with lacking htmlSnippet in results
 v1.0.0, 2021-02-23 -- Insist on being passed a request session instead of using canonicalwebteam.http
 v1.2.0, 2021-04-11 -- Add optional site restricted search
-v1.2.0, 2021-04-11 -- Block results pages from being indexed; block bots from using search API
+v1.2.1, 2022-06-23 -- Block results pages from being indexed; block bots from using search API
+v1.2.2, 2022-07-06 -- Block searches with weird characters in them
