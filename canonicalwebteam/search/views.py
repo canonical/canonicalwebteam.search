@@ -4,6 +4,7 @@ import os
 # Packages
 import flask
 import user_agents
+from pydnsbl import DNSBLIpChecker
 
 # Local
 from canonicalwebteam.search.models import get_search_results
@@ -66,6 +67,15 @@ def build_search_view(
 
             if any(char in query for char in illegal_characters):
                 flask.abort(403, "Search query contains an illegal character")
+
+            # Block spammers from blocklists
+            if ".com" in query:
+                ipcheck = DNSBLIpChecker().check(flask.request.remote_addr)
+                if ipcheck.blacklisted:
+                    blocklists = ", ".join(ipcheck.detected_by.keys())
+                    flask.abort(
+                        403, f"IP address detected in blocklists: {blocklists}"
+                    )
 
             # Block if a search bot
             agent = user_agents.parse(str(flask.request.user_agent))
