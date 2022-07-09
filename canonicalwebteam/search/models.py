@@ -1,4 +1,9 @@
-def get_search_results(  # noqa: E302
+# Packages
+import flask
+import user_agents
+
+
+def get_search_results(
     session,
     api_key,
     query,
@@ -13,6 +18,18 @@ def get_search_results(  # noqa: E302
 
     https://developers.google.com/custom-search/v1/site_restricted_api
     """
+
+    # Block weird characters
+    illegal_characters = ("【", "】")
+
+    if any(char in query for char in illegal_characters):
+        flask.abort(403, "Search query contains an illegal character")
+
+    # Block if a search bot
+    agent = user_agents.parse(str(flask.request.user_agent))
+    if agent.is_bot:
+        flask.abort(403, "Search engine crawlers can't perform searches")
+
     url_endpoint = "https://www.googleapis.com/customsearch/v1"
 
     if site_restricted_search:
