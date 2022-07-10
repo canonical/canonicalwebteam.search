@@ -25,10 +25,18 @@ def get_search_results(
     if any(char in query for char in illegal_characters):
         flask.abort(403, "Search query contains an illegal character")
 
-    # Block if a search bot
-    agent = user_agents.parse(str(flask.request.user_agent))
-    if agent.is_bot:
-        flask.abort(403, "Search engine crawlers can't perform searches")
+    # Block web crawlers
+    bot_prefixes = (
+        "python-requests",
+        "curl",
+        "urlwatch",
+        "GuzzleHttp",
+        "Feedly",
+    )
+    ua_string = str(flask.request.user_agent)
+    agent = user_agents.parse(ua_string)
+    if agent.is_bot or ua_string.startswith(bot_prefixes):
+        flask.abort(403, "Web crawlers may not perform searches")
 
     url_endpoint = "https://www.googleapis.com/customsearch/v1"
 
