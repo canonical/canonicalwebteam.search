@@ -1,4 +1,9 @@
-def get_search_results(  # noqa: E302
+# Packages
+import flask
+import user_agents
+
+
+def get_search_results(
     session,
     api_key,
     query,
@@ -13,6 +18,30 @@ def get_search_results(  # noqa: E302
 
     https://developers.google.com/custom-search/v1/site_restricted_api
     """
+
+    # Block weird characters
+    illegal_characters = ("【", "】")
+
+    if any(char in query for char in illegal_characters):
+        flask.abort(403, "Search query contains an illegal character")
+
+    # Block web crawlers
+    bot_prefixes = (
+        "python-requests",
+        "curl",
+        "urlwatch",
+        "GuzzleHttp",
+        "Feedly",
+    )
+    bot_contains = ("HeadlessChrome", "Assetnote")
+    agent = user_agents.parse(str(flask.request.user_agent))
+    if (
+        agent.is_bot
+        or agent.ua_string.startswith(bot_prefixes)
+        or any(substr in agent.ua_string for substr in bot_contains)
+    ):
+        flask.abort(403, "Web crawlers may not perform searches")
+
     url_endpoint = "https://www.googleapis.com/customsearch/v1"
 
     if site_restricted_search:
