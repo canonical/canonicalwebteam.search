@@ -33,9 +33,13 @@ def get_search_results(
         "GuzzleHttp",
         "Feedly",
     )
-    ua_string = str(flask.request.user_agent)
-    agent = user_agents.parse(ua_string)
-    if agent.is_bot or ua_string.startswith(bot_prefixes):
+    bot_contains = ("HeadlessChrome", "Assetnote")
+    agent = user_agents.parse(str(flask.request.user_agent))
+    if (
+        agent.is_bot
+        or agent.ua_string.startswith(bot_prefixes)
+        or any(substr in agent.ua_string for substr in bot_contains)
+    ):
         flask.abort(403, "Web crawlers may not perform searches")
 
     url_endpoint = "https://www.googleapis.com/customsearch/v1"
