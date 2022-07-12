@@ -27,13 +27,23 @@ def get_search_results(
 
     # Block web crawlers
     bot_prefixes = (
-        "python-requests",
+        "python",  # python-requests/, python-urllib3/, Python/ etc.
+        "Go-http-client",
+        "kube-probe",
+        "Prometheus",
         "curl",
         "urlwatch",
         "GuzzleHttp",
         "Feedly",
+        "github-camo",
+        "Site24x7",
+        "check_http",
+        "Tiny Tiny RSS",
+        "RSS Discovery Engine",
+        "NetNewsWire",
+        "ALittle Client",
     )
-    bot_contains = ("HeadlessChrome", "Assetnote")
+    bot_contains = ("HeadlessChrome/", "Assetnote/")
     agent = user_agents.parse(str(flask.request.user_agent))
     if (
         agent.is_bot
