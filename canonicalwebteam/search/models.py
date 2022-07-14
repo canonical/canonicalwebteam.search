@@ -42,6 +42,7 @@ def get_search_results(
         "RSS Discovery Engine",
         "NetNewsWire",
         "ALittle Client",
+        "gh",
     )
     bot_contains = ("HeadlessChrome/", "Assetnote/")
     agent = user_agents.parse(str(flask.request.user_agent))
