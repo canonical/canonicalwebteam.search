@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="canonicalwebteam.search",
-    version="1.2.6",
+    version="1.2.7",
     author="Canonical webteam",
     author_email="webteam@canonical.com",
     url="https://github.com/canonical-web-and-design/canonicalwebteam.search",
