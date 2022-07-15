@@ -44,7 +44,7 @@ def get_search_results(
         "ALittle Client",
         "gh",
     )
-    bot_contains = ("HeadlessChrome/", "Assetnote/")
+    bot_contains = ("HeadlessChrome/", "Assetnote/", "PetalBot")
     agent = user_agents.parse(str(flask.request.user_agent))
     if (
         agent.is_bot
