@@ -48,8 +48,6 @@ def get_search_results(
         "HeadlessChrome/",
         "Assetnote/",
         "PetalBot",
-        "Googlebot/",
-        "bingbot/",
     )
     agent = user_agents.parse(str(flask.request.user_agent))
     if (

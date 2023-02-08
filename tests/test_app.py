@@ -73,6 +73,18 @@ class TestApp(unittest.TestCase):
             ),
         )
 
+        # Rate limits
+        self.app.add_url_rule(
+            "/server/docs/limited/search",
+            "server-docs-search-limited",
+            build_search_view(
+                session=session,
+                template_path="docs/search.html",
+                site_restricted_search=True,
+                request_limit="0/second",
+            ),
+        )
+
         self.client = self.app.test_client()
 
     def tearDown(self):
@@ -246,3 +258,13 @@ class TestApp(unittest.TestCase):
             ),
             search_response.data,
         )
+
+    def test_rate_limit(self):
+        """
+        Test rate limits
+        """
+
+        search_response = self.client.get(
+            "/server/docs/limited/search?q=packer&start=20&num=3"
+        )
+        self.assertEqual(search_response.status_code, 429)

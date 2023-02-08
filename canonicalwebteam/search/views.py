@@ -6,6 +6,10 @@ import flask
 
 # Local
 from canonicalwebteam.search.models import get_search_results
+from limits import storage, strategies, parse
+
+memory_storage = storage.MemoryStorage()
+fixed_window = strategies.MovingWindowRateLimiter(memory_storage)
 
 
 class NoAPIKeyError(Exception):
@@ -18,6 +22,7 @@ def build_search_view(
     template_path="search.html",
     search_engine_id="009048213575199080868:i3zoqdwqk8o",
     site_restricted_search=False,
+    request_limit="500/day",
 ):
     """
     Build and return a view function that will query the
@@ -45,6 +50,13 @@ def build_search_view(
         """
         Get search results from Google Custom Search
         """
+        # Rate limit requests to protect from spamming
+        # To adjust this rate visit
+        # https://limits.readthedocs.io/en/latest/quickstart.html#examples
+        limit = parse(request_limit)
+        rate_limit = fixed_window.hit(limit)
+        if not rate_limit:
+            return flask.abort(429, f"The rate limit is: {request_limit}")
 
         # API key should always be provided as an environment variable
         search_api_key = os.getenv("SEARCH_API_KEY")

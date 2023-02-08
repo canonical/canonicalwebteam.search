@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="canonicalwebteam.search",
-    version="1.2.8",
+    version="1.3.0",
     author="Canonical webteam",
     author_email="webteam@canonical.com",
     url="https://github.com/canonical/canonicalwebteam.search",
@@ -15,6 +15,6 @@ setup(
     packages=find_packages(),
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    install_requires=["Flask>=1.0.2", "user-agents>=2.0.0"],
-    tests_require=["httpretty", "Flask>=1.0.2", "user-agents>=2.0.0"],
+    install_requires=["Flask>=1.0.2", "user-agents>=2.0.0", "limits>=3.2.0"],
+    tests_require=["httpretty"],
 )
