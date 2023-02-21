@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install system dependencies
       run: |
@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Install system dependencies
       run: |
@@ -37,15 +37,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-
-    - name: Install system dependencies
-      run: |
-        pip3 install --upgrade setuptools pip
-        pip3 install wheel
+    - uses: actions/checkout@v3
 
     - name: Test Python
-      run: python3 setup.py test
+      run: |
+        python3 setup.py install --user test
+
 
   check-inclusive-naming:
     runs-on: ubuntu-latest
