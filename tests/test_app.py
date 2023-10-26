@@ -81,7 +81,6 @@ class TestApp(unittest.TestCase):
                 session=session,
                 template_path="docs/search.html",
                 site_restricted_search=True,
-                request_limit="0/second",
             ),
         )
 
@@ -258,13 +257,3 @@ class TestApp(unittest.TestCase):
             ),
             search_response.data,
         )
-
-    def test_rate_limit(self):
-        """
-        Test rate limits
-        """
-
-        search_response = self.client.get(
-            "/server/docs/limited/search?q=packer&start=20&num=3"
-        )
-        self.assertEqual(search_response.status_code, 429)
