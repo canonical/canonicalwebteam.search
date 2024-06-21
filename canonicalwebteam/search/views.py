@@ -3,6 +3,8 @@ import os
 
 # Packages
 import flask
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 # Local
 from canonicalwebteam.search.models import get_search_results
@@ -22,7 +24,7 @@ def build_search_view(
     template_path="search.html",
     search_engine_id="009048213575199080868:i3zoqdwqk8o",
     site_restricted_search=False,
-    request_limit="500/day",
+    request_limit="2000/day",
 ):
     """
     Build and return a view function that will query the
@@ -46,6 +48,14 @@ def build_search_view(
         )
     """
 
+    app = flask.Flask(__name__)
+    limiter = Limiter(
+        app,
+        key_func=get_remote_address,
+        default_limits=[request_limit]
+    )
+
+    @limiter.limit(request_limit)
     def search_view():
         """
         Get search results from Google Custom Search
@@ -53,10 +63,10 @@ def build_search_view(
         # Rate limit requests to protect from spamming
         # To adjust this rate visit
         # https://limits.readthedocs.io/en/latest/quickstart.html#examples
-        limit = parse(request_limit)
-        rate_limit = fixed_window.hit(limit)
-        if not rate_limit:
-            return flask.abort(429, f"The rate limit is: {request_limit}")
+        # limit = parse(request_limit)
+        # rate_limit = fixed_window.hit(limit)
+        # if not rate_limit:
+        #     return flask.abort(429, f"The rate limit is: {request_limit}")
 
         # API key should always be provided as an environment variable
         search_api_key = os.getenv("SEARCH_API_KEY")
