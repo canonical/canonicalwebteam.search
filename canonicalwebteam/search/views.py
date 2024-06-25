@@ -46,7 +46,7 @@ def build_search_view(
 
     app = flask.Flask(__name__)
     limiter = Limiter(
-        app, key_func=get_remote_address, default_limits=[request_limit]
+        get_remote_address, app=app, default_limits=[request_limit]
     )
 
     @limiter.limit(request_limit)
