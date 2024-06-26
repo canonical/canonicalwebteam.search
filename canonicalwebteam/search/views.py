@@ -49,7 +49,6 @@ def build_search_view(
         get_remote_address, app=app, default_limits=[request_limit]
     )
 
-    @limiter.limit(request_limit)
     def search_view():
         """
         Get search results from Google Custom Search
@@ -68,28 +67,29 @@ def build_search_view(
         results = None
 
         if query:
-            results = get_search_results(
-                session=session,
-                api_key=search_api_key,
-                search_engine_id=search_engine_id,
-                siteSearch=site_search,
-                site_restricted_search=site_restricted_search,
-                query=query,
-                start=start,
-                num=num,
-            )
-
-            return (
-                flask.render_template(
-                    template_path,
+            with limiter.limit(request_limit):
+                results = get_search_results(
+                    session=session,
+                    api_key=search_api_key,
+                    search_engine_id=search_engine_id,
+                    siteSearch=site_search,
+                    site_restricted_search=site_restricted_search,
                     query=query,
                     start=start,
                     num=num,
-                    results=results,
-                    siteSearch=site_search,
-                ),
-                {"X-Robots-Tag": "noindex"},
-            )
+                )
+
+                return (
+                    flask.render_template(
+                        template_path,
+                        query=query,
+                        start=start,
+                        num=num,
+                        results=results,
+                        siteSearch=site_search,
+                    ),
+                    {"X-Robots-Tag": "noindex"},
+                )
 
         else:
             return flask.render_template(
