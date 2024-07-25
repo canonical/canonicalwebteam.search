@@ -3,6 +3,7 @@ import os
 
 # Packages
 import flask
+from flask import current_app as app
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
@@ -44,7 +45,6 @@ def build_search_view(
         )
     """
 
-    app = flask.Flask(__name__)
     limiter = Limiter(
         get_remote_address, app=app, default_limits=[request_limit]
     )

@@ -11,4 +11,4 @@ v1.2.5, 2022-07-12 -- Block some more bot useragents
 v1.2.6, 2022-07-13 -- Block one more useragent - "gh"
 v1.2.7, 2022-07-15 -- Block more user agents - "Petalbot"
 v1.3.0, 2023-02-20 -- Add rate limits
-v1.3.1, 2-24-06-21 -- Migrate to Flask.Limiter for rate limits
+v1.4.0, 2-24-06-21 -- Migrate to Flask.Limiter for rate limits
