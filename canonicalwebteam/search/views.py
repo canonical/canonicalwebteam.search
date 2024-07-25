@@ -14,9 +14,7 @@ class NoAPIKeyError(Exception):
     pass
 
 
-limiter = Limiter(
-    get_remote_address
-)
+limiter = Limiter(get_remote_address)
 
 
 def build_search_view(
