@@ -3,7 +3,6 @@ import os
 
 # Packages
 import flask
-from flask import current_app as app
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
@@ -15,7 +14,13 @@ class NoAPIKeyError(Exception):
     pass
 
 
+limiter = Limiter(
+    get_remote_address
+)
+
+
 def build_search_view(
+    app,
     session,
     site=None,
     template_path="search.html",
@@ -23,7 +28,7 @@ def build_search_view(
     site_restricted_search=False,
     request_limit="2000/day",
 ):
-    """
+    """ 
     Build and return a view function that will query the
     Google Custom Search API and then render search results
     using the provided template.
@@ -32,12 +37,13 @@ def build_search_view(
 
         from canonicalwebteam.search import build_search_view
 
-        app = Flask()
+        app = Flask(__name__)
         session = talisker.requests.get_session()
         app.add_url_rule(
             "/search",
             "search",
             build_search_view(
+                app,
                 session=session,
                 site="snapcraft.io",
                 template_path="search.html"
@@ -45,9 +51,7 @@ def build_search_view(
         )
     """
 
-    limiter = Limiter(
-        get_remote_address, app=app, default_limits=[request_limit]
-    )
+    limiter.init_app(app)
 
     def search_view():
         """
@@ -65,7 +69,7 @@ def build_search_view(
         num = params.get("num")
         site_search = site or params.get("siteSearch") or params.get("domain")
         results = None
-
+        
         if query:
             with limiter.limit(request_limit):
                 results = get_search_results(
@@ -79,17 +83,17 @@ def build_search_view(
                     num=num,
                 )
 
-                return (
-                    flask.render_template(
-                        template_path,
-                        query=query,
-                        start=start,
-                        num=num,
-                        results=results,
-                        siteSearch=site_search,
-                    ),
-                    {"X-Robots-Tag": "noindex"},
-                )
+            return (
+                flask.render_template(
+                    template_path,
+                    query=query,
+                    start=start,
+                    num=num,
+                    results=results,
+                    siteSearch=site_search,
+                ),
+                {"X-Robots-Tag": "noindex"},
+            )
 
         else:
             return flask.render_template(

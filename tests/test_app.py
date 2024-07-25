@@ -48,7 +48,7 @@ class TestApp(unittest.TestCase):
 
         # Default use-case
         self.app.add_url_rule(
-            "/search", "search", build_search_view(session=session)
+            "/search", "search", build_search_view(self.app, session=session)
         )
 
         # Custom use-case
@@ -56,6 +56,7 @@ class TestApp(unittest.TestCase):
             "/docs/search",
             "docs-search",
             build_search_view(
+                self.app,
                 session=session,
                 site="maas.io/docs",
                 template_path="docs/search.html",
@@ -67,6 +68,7 @@ class TestApp(unittest.TestCase):
             "/server/docs/search",
             "server-docs-search",
             build_search_view(
+                self.app,
                 session=session,
                 template_path="docs/search.html",
                 site_restricted_search=True,
@@ -78,6 +80,7 @@ class TestApp(unittest.TestCase):
             "/server/docs/limited/search",
             "server-docs-search-limited",
             build_search_view(
+                self.app,
                 session=session,
                 template_path="docs/search.html",
                 site_restricted_search=True,
