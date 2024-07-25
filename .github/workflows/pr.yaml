@@ -41,7 +41,9 @@ jobs:
 
     - name: Test Python
       run: |
-        python3 setup.py install --user test
+        pip install -e .
+        pip install httpretty
+        python -m unittest discover tests
 
 
   check-inclusive-naming:
