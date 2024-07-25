@@ -28,7 +28,7 @@ def build_search_view(
     site_restricted_search=False,
     request_limit="2000/day",
 ):
-    """ 
+    """
     Build and return a view function that will query the
     Google Custom Search API and then render search results
     using the provided template.
@@ -69,7 +69,7 @@ def build_search_view(
         num = params.get("num")
         site_search = site or params.get("siteSearch") or params.get("domain")
         results = None
-        
+
         if query:
             with limiter.limit(request_limit):
                 results = get_search_results(
