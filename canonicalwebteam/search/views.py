@@ -3,26 +3,28 @@ import os
 
 # Packages
 import flask
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 # Local
 from canonicalwebteam.search.models import get_search_results
-from limits import storage, strategies, parse
-
-memory_storage = storage.MemoryStorage()
-fixed_window = strategies.MovingWindowRateLimiter(memory_storage)
 
 
 class NoAPIKeyError(Exception):
     pass
 
 
+limiter = Limiter(get_remote_address)
+
+
 def build_search_view(
+    app,
     session,
     site=None,
     template_path="search.html",
     search_engine_id="009048213575199080868:i3zoqdwqk8o",
     site_restricted_search=False,
-    request_limit="500/day",
+    request_limit="2000/day",
 ):
     """
     Build and return a view function that will query the
@@ -33,12 +35,13 @@ def build_search_view(
 
         from canonicalwebteam.search import build_search_view
 
-        app = Flask()
+        app = Flask(__name__)
         session = talisker.requests.get_session()
         app.add_url_rule(
             "/search",
             "search",
             build_search_view(
+                app,
                 session=session,
                 site="snapcraft.io",
                 template_path="search.html"
@@ -46,18 +49,12 @@ def build_search_view(
         )
     """
 
+    limiter.init_app(app)
+
     def search_view():
         """
         Get search results from Google Custom Search
         """
-        # Rate limit requests to protect from spamming
-        # To adjust this rate visit
-        # https://limits.readthedocs.io/en/latest/quickstart.html#examples
-        limit = parse(request_limit)
-        rate_limit = fixed_window.hit(limit)
-        if not rate_limit:
-            return flask.abort(429, f"The rate limit is: {request_limit}")
-
         # API key should always be provided as an environment variable
         search_api_key = os.getenv("SEARCH_API_KEY")
 
@@ -72,16 +69,17 @@ def build_search_view(
         results = None
 
         if query:
-            results = get_search_results(
-                session=session,
-                api_key=search_api_key,
-                search_engine_id=search_engine_id,
-                siteSearch=site_search,
-                site_restricted_search=site_restricted_search,
-                query=query,
-                start=start,
-                num=num,
-            )
+            with limiter.limit(request_limit):
+                results = get_search_results(
+                    session=session,
+                    api_key=search_api_key,
+                    search_engine_id=search_engine_id,
+                    siteSearch=site_search,
+                    site_restricted_search=site_restricted_search,
+                    query=query,
+                    start=start,
+                    num=num,
+                )
 
             return (
                 flask.render_template(
