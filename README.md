@@ -38,7 +38,7 @@ app.add_url_rule(
     "/docs/search",
     "docs-search",
     build_search_view(
-        app=app # require in version 1.4.0 onwards
+        app=app # required in version 1.4.0 onwards
         session=session,
         site="maas.io/docs",
         template_path="docs/search.html",
