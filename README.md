@@ -27,10 +27,10 @@ import talisker.requests
 from flask import Flask
 from canonicalwebteam.search import build_search_view
 
-app = Flask("myapp")
+app = Flask("myapp") # You must provide app
 session = talisker.requests.get_session()  # You must provide a requests session
 
-app.add_url_rule("/search", "search", build_search_view(session))
+app.add_url_rule("/search", "search", build_search_view(app, session))
 
 # Or, a bit more complex example
 
@@ -38,7 +38,7 @@ app.add_url_rule(
     "/docs/search",
     "docs-search",
     build_search_view(
-        app=app
+        app=app # required in version 1.4.0 onwards
         session=session,
         site="maas.io/docs",
         template_path="docs/search.html",
