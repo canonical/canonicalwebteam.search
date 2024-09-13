@@ -24,7 +24,7 @@ def build_search_view(
     template_path="search.html",
     search_engine_id="009048213575199080868:i3zoqdwqk8o",
     site_restricted_search=False,
-    request_limit="2000/day;6/minute;1/second",
+    request_limit="2000/day;100/minute;2/second",
 ):
     """
     Build and return a view function that will query the
