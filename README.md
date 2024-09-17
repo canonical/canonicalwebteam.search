@@ -43,7 +43,7 @@ app.add_url_rule(
         site="maas.io/docs",
         template_path="docs/search.html",
         search_engine_id="xxxxxxxxxx", # Optional argument, required by some of our sites
-        request_limit="500/day", # Allows your to configure the limit at which the user will be forbidden to query more. Defaults to 2/second, 100/minute, 2000/day
+        request_limit="500/day", # Allows your to configure the limit at which the user will be forbidden to query more. If omitted defaults to 2/second, 100/minute, 2000/day
     )
 )
 ```
