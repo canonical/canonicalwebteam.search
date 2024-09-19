@@ -14,6 +14,10 @@ Or add `canonicalwebteam.search` to your `requirements.txt`.
 
 ## Usage
 
+### Requirements
+
+If you are using [Flask-Base](https://github.com/canonical/canonicalwebteam.flask-base) you need to be using atleast [2.0.0](https://github.com/canonical/canonicalwebteam.flask-base/releases/tag/2.0.0). If you are not, you will need atleast [Flask@2.3.0](https://flask.palletsprojects.com/en/2.3.x/changes/).
+
 ### Local development
 
 For local development, it's best to test this module with one of our website projects like [ubuntu.com](https://github.com/canonical-web-and-design/ubuntu.com/). For more information, follow [this guide (internal only)](https://discourse.canonical.com/t/how-to-run-our-python-modules-for-local-development/308).
