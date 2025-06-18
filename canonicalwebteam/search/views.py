@@ -80,7 +80,6 @@ def build_search_view(
                     query=query,
                     start=start,
                     num=num,
-                    featured=featured,
                 )
 
             return (
@@ -91,7 +90,6 @@ def build_search_view(
                     num=num,
                     results=results,
                     siteSearch=site_search,
-                    featured=featured,
                 ),
                 {"X-Robots-Tag": "noindex"},
             )
