@@ -25,6 +25,7 @@ def build_search_view(
     search_engine_id="009048213575199080868:i3zoqdwqk8o",
     site_restricted_search=False,
     request_limit="2000/day;100/minute;2/second",
+    featured=None,
 ):
     """
     Build and return a view function that will query the
@@ -101,6 +102,7 @@ def build_search_view(
                 num=num,
                 results=results,
                 siteSearch=site_search,
+                featured=featured,
             )
 
     return search_view
